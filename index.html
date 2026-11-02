@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zach &amp; Brianna — We're getting married</title>
+    <meta
+      name="description"
+      content="Zach and Brianna are getting married. A first note to the people we love — the date and place are on their way."
+    />
+    <meta name="theme-color" content="#f3eee6" />
+    <meta property="og:title" content="Zach &amp; Brianna are getting married" />
+    <meta
+      property="og:description"
+      content="A first note to the people we love. The date and the place are on their way."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%232c3a2b' width='32' height='32' rx='16'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Georgia,serif' font-size='11' fill='%23f3eee6'%3EZB%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,560;1,9..144,460&family=Outfit:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#letter">Skip to the letter</a>
+
+    <header class="top">
+      <a class="mark" href="#top" aria-label="Zach and Brianna, back to top">
+        <span>Z</span>
+        <span class="mark-amp" aria-hidden="true">&amp;</span>
+        <span>B</span>
+      </a>
+      <nav class="nav" aria-label="Page">
+        <a href="#day">The day</a>
+        <a href="#letter">A note</a>
+        <a href="#reply">Reply</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="names">
+        <p class="eyebrow">An announcement</p>
+        <h1 id="names">
+          <span class="name">Zach</span>
+          <span class="amp" aria-hidden="true">&amp;</span>
+          <span class="name">Brianna</span>
+        </h1>
+        <p class="lede">are getting married</p>
+        <p class="hero-note">
+          The day is not on the calendar yet. Consider this the first
+          envelope — opened early, on purpose.
+        </p>
+        <a class="down" href="#letter">
+          Read the note
+          <span aria-hidden="true">↓</span>
+        </a>
+      </section>
+
+      <section class="letter" id="letter" aria-labelledby="letter-title">
+        <div class="letter-inner">
+          <p class="eyebrow light">For our people</p>
+          <h2 id="letter-title">We wanted you to hear it from us.</h2>
+          <div class="letter-body">
+            <p>
+              This is the short version. The long version has a first dance,
+              a long toast, and the people we love most in one room.
+            </p>
+            <p>
+              We are still choosing the day and the place. When we know, you
+              will know — this page will carry the details, and a proper
+              invitation will follow.
+            </p>
+            <p class="signoff">With love, Zach &amp; Brianna</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="day" id="day" aria-labelledby="day-title">
+        <div class="section-head">
+          <p class="eyebrow">The day, in brief</p>
+          <h2 id="day-title">What we can tell you now</h2>
+        </div>
+        <ol class="facts">
+          <li>
+            <span class="num">01</span>
+            <div>
+              <h3>When</h3>
+              <p>A date worth clearing the weekend for. Announced here first.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">02</span>
+            <div>
+              <h3>Where</h3>
+              <p>Somewhere we love. The address arrives with the invitation.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">03</span>
+            <div>
+              <h3>What to wear</h3>
+              <p>Festive. Comfortable enough that you will actually dance.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="reply" id="reply" aria-labelledby="reply-title">
+        <div class="reply-copy">
+          <p class="eyebrow">A reply</p>
+          <h2 id="reply-title">If you already know you want to be there, tell us.</h2>
+          <p>
+            It helps us plan the room. Nothing is final until the invitation
+            arrives — this is just a hand raised early.
+          </p>
+        </div>
+
+        <form class="card" id="rsvp" novalidate>
+          <div class="field">
+            <label for="guest">Your name</label>
+            <input id="guest" name="guest" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <fieldset class="field">
+            <legend>Will you come?</legend>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="coming" value="Joyfully, yes" required />
+                <span>Joyfully, yes</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="coming" value="I will try" />
+                <span>I will try</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="coming" value="I can't make it" />
+                <span>I can't make it</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="note">A note <span class="optional">optional</span></label>
+            <textarea id="note" name="note" rows="3"></textarea>
+          </div>
+          <p class="form-error" id="form-error" role="alert" hidden>
+            Add your name, a real email, and whether you can come.
+          </p>
+          <button type="submit">Send our reply</button>
+          <p class="fine">An early yes, not the formal invitation.</p>
+        </form>
+
+        <div class="thanks" id="thanks" hidden>
+          <p class="eyebrow">Received</p>
+          <h2 tabindex="-1">We're glad you wrote.</h2>
+          <p id="thanks-body"></p>
+          <button type="button" id="again">Write another</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Zach &amp; Brianna</p>
+      <p>zachandbrianna.com</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
