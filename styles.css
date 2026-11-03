@@ -158,6 +158,78 @@ h1 {
   font-size: clamp(1.6rem, 3vw, 2.15rem);
 }
 
+.when {
+  display: flex;
+  flex-direction: column;
+  margin: 0.85rem 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 460;
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  line-height: 1.25;
+}
+
+.countdown {
+  margin-top: 1.5rem;
+}
+
+.ticks {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.tick {
+  min-width: 4.4rem;
+  padding: 0.85rem 0.85rem 0.7rem;
+  text-align: center;
+}
+
+.tick + .tick {
+  border-left: 1px solid var(--line);
+}
+
+.count {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 560;
+  font-size: clamp(2rem, 5vw, 3.15rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.now {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 460;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .hero-note {
   max-width: 28rem;
   margin: 1.25rem 0 0;
@@ -267,6 +339,25 @@ h1 {
   margin: 0;
   color: var(--ink-soft);
   max-width: 36rem;
+}
+
+.map {
+  display: inline-block;
+  margin-top: 0.65rem;
+  color: var(--moss);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.15rem;
+}
+
+.map:hover,
+.map:focus-visible {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 
 .reply {
@@ -408,7 +499,9 @@ button:focus-visible {
 
 .thanks[hidden],
 .form-error[hidden],
-.card[hidden] {
+.card[hidden],
+.now[hidden],
+.ticks[hidden] {
   display: none;
 }
 
@@ -458,6 +551,11 @@ button:focus-visible {
 
   .name {
     font-size: clamp(3.6rem, 22vw, 5.5rem);
+  }
+
+  .tick {
+    min-width: 0;
+    padding-inline: 0.55rem;
   }
 }
 
