@@ -36,6 +36,7 @@
       <nav class="nav" aria-label="Page">
         <a href="#day">The day</a>
         <a href="#letter">A note</a>
+        <a href="#registry">Registry</a>
         <a href="#reply">Reply</a>
       </nav>
     </header>
@@ -162,6 +163,26 @@
         </ol>
       </section>
 
+      <section class="registry" id="registry" aria-labelledby="registry-title">
+        <div class="registry-card">
+          <div class="registry-inner">
+            <p class="eyebrow">A registry</p>
+            <p class="registry-mark" aria-hidden="true">
+              <span>Z</span><span class="mark-amp">&amp;</span><span>B</span>
+            </p>
+            <h2 id="registry-title">If you would like to give a gift</h2>
+            <p class="registry-note">A list for our home, kept on Amazon.</p>
+            <a
+              class="registry-link"
+              href="https://www.amazon.com/wedding/share/zachandbriannajohnson"
+              target="_blank"
+              rel="noopener noreferrer"
+              >See the registry</a
+            >
+          </div>
+        </div>
+      </section>
+
       <section class="reply" id="reply" aria-labelledby="reply-title">
         <div class="reply-copy">
           <p class="eyebrow">A reply</p>
@@ -198,15 +219,53 @@
               </label>
             </div>
           </fieldset>
+          <fieldset class="field">
+            <legend>The invitation</legend>
+            <div class="switch">
+              <label class="switch-opt">
+                <input type="radio" name="invite" value="Digital is fine" checked />
+                <span>Digital is fine</span>
+              </label>
+              <label class="switch-opt">
+                <input type="radio" name="invite" value="Please mail an official one" />
+                <span>Mail an official one</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="address" id="address" hidden>
+            <p class="address-lead">Where should we send it?</p>
+            <div class="field">
+              <label for="street">Street address</label>
+              <input id="street" name="street" type="text" autocomplete="street-address" />
+            </div>
+            <div class="address-row">
+              <div class="field">
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" autocomplete="address-level2" />
+              </div>
+              <div class="field">
+                <label for="state">State</label>
+                <input id="state" name="state" type="text" autocomplete="address-level1" />
+              </div>
+              <div class="field">
+                <label for="zip">ZIP</label>
+                <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" />
+              </div>
+            </div>
+          </div>
           <div class="field">
             <label for="note">A note <span class="optional">optional</span></label>
             <textarea id="note" name="note" rows="3"></textarea>
           </div>
+          <input class="honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <p class="form-error" id="form-error" role="alert" hidden>
             Add your name, a real email, and whether you can come.
           </p>
           <button type="submit">Send our reply</button>
-          <p class="fine">An early yes, not the formal invitation.</p>
+          <p class="fine">
+            Your reply is added to our list and emailed to zachandbriannajohnson@gmail.com.
+            An early yes, not the formal invitation.
+          </p>
         </form>
 
         <div class="thanks" id="thanks" hidden>

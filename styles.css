@@ -85,6 +85,7 @@ body {
 
 .nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.25rem;
 }
 
@@ -294,6 +295,7 @@ h1 {
 }
 
 .section-head h2,
+.registry h2,
 .reply h2,
 .thanks h2 {
   margin: 0;
@@ -358,6 +360,68 @@ h1 {
 .map:focus-visible {
   color: var(--ink);
   border-bottom-color: var(--ink);
+}
+
+.registry {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0.6rem var(--space) clamp(3.5rem, 8vw, 6rem);
+}
+
+.registry-card {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0.55rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 252, 247, 0.35);
+}
+
+.registry-inner {
+  border: 1px solid var(--line);
+  padding: clamp(2.4rem, 6vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem);
+  text-align: center;
+}
+
+.registry-inner .eyebrow {
+  margin-bottom: 0.85rem;
+}
+
+.registry-mark {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 560;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.registry-inner h2 {
+  max-width: 12ch;
+  margin-inline: auto;
+}
+
+.registry-note {
+  max-width: 22rem;
+  margin: 1rem auto 0;
+  color: var(--ink-soft);
+}
+
+.registry-link {
+  display: inline-block;
+  margin-top: 1.6rem;
+  background: var(--moss);
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.35rem;
+}
+
+.registry-link:hover,
+.registry-link:focus-visible {
+  background: var(--ink);
 }
 
 .reply {
@@ -467,6 +531,86 @@ textarea:focus {
   color: var(--cream);
 }
 
+.switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background: var(--moss);
+  transition: transform 180ms ease;
+}
+
+.switch:has(input[value="Please mail an official one"]:checked)::before {
+  transform: translateX(100%);
+}
+
+.switch-opt {
+  position: relative;
+  z-index: 1;
+}
+
+.switch-opt input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.switch-opt span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.8rem;
+  padding: 0.55rem 0.45rem;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.switch-opt input:checked + span {
+  color: var(--cream);
+}
+
+.switch-opt input:focus-visible + span {
+  outline: 2px solid var(--moss);
+  outline-offset: -2px;
+}
+
+.address-lead {
+  margin: 0 0 0.85rem;
+  color: var(--ink-soft);
+}
+
+.address-row {
+  display: grid;
+  grid-template-columns: 1.3fr 0.6fr 0.7fr;
+  gap: 0 0.8rem;
+}
+
+.honey {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 button {
   appearance: none;
   border: 0;
@@ -486,6 +630,11 @@ button:focus-visible {
   background: var(--moss);
 }
 
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .form-error {
   color: #7a2e24;
   margin: 0 0 0.8rem;
@@ -500,6 +649,7 @@ button:focus-visible {
 .thanks[hidden],
 .form-error[hidden],
 .card[hidden],
+.address[hidden],
 .now[hidden],
 .ticks[hidden] {
   display: none;
@@ -557,10 +707,18 @@ button:focus-visible {
     min-width: 0;
     padding-inline: 0.55rem;
   }
+
+  .address-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .switch::before {
+    transition: none;
   }
 }

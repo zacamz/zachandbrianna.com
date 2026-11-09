@@ -1,5 +1,9 @@
-// Point replies at your inbox. Until this is set, the note stays on the page.
-const RSVP_TO = "";
+const RSVP_TO = "zachandbriannajohnson@gmail.com";
+
+// After you deploy rsvp-sheet.gs as a web app, paste that URL here.
+// Each reply is then a row in the sheet, and a copy is emailed to RSVP_TO.
+const SHEET_URL =
+  "https://script.google.com/macros/s/AKfycbwr2e3g4uAE1aYzXRUNoUUZSATWEbdts9SPsF-Cmg6_8P82_qubYke5o-0QHSQ9oTeAAw/exec";
 
 // 11:00 a.m. Central Time, which is UTC−6 in January.
 const WEDDING_AT = new Date("2027-01-03T11:00:00-06:00");
@@ -60,52 +64,131 @@ const countdownTimer = window.setInterval(() => {
 
 const form = document.querySelector("#rsvp");
 const thanks = document.querySelector("#thanks");
+const thanksBody = document.querySelector("#thanks-body");
 const error = document.querySelector("#form-error");
 const again = document.querySelector("#again");
+const send = form.querySelector('button[type="submit"]');
+const addressBlock = document.querySelector("#address");
+const addressInputs = addressBlock.querySelectorAll("input");
+const MAIL_INVITE = "Please mail an official one";
 
-form.addEventListener("submit", (event) => {
+function mailChosen() {
+  return form.querySelector('input[name="invite"]:checked')?.value === MAIL_INVITE;
+}
+
+function syncInvite() {
+  const mail = mailChosen();
+  addressBlock.hidden = !mail;
+  addressInputs.forEach((input) => {
+    input.required = mail;
+  });
+}
+
+form.querySelectorAll('input[name="invite"]').forEach((input) => {
+  input.addEventListener("change", syncInvite);
+});
+syncInvite();
+
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   error.hidden = true;
+  syncInvite();
 
   if (!form.reportValidity()) {
+    error.textContent = mailChosen()
+      ? "Add your name, a real email, whether you can come, and a mailing address."
+      : "Add your name, a real email, and whether you can come.";
     error.hidden = false;
     return;
   }
 
   const data = new FormData(form);
+  if (String(data.get("_honey") || "").trim()) return;
+
   const guest = String(data.get("guest")).trim();
   const email = String(data.get("email")).trim();
   const coming = String(data.get("coming"));
+  const invite = String(data.get("invite"));
   const note = String(data.get("note") || "").trim();
-
-  const body = [
-    `Name: ${guest}`,
-    `Email: ${email}`,
-    `Coming: ${coming}`,
-    note ? `Note: ${note}` : "",
+  const mail = mailChosen();
+  const address = [
+    String(data.get("street") || "").trim(),
+    String(data.get("city") || "").trim(),
+    String(data.get("state") || "").trim(),
+    String(data.get("zip") || "").trim(),
   ]
     .filter(Boolean)
-    .join("\n");
+    .join(", ");
 
-  const thanksBody = document.querySelector("#thanks-body");
-  if (RSVP_TO) {
-    const subject = encodeURIComponent(`Wedding reply from ${guest}`);
-    const href = `mailto:${RSVP_TO}?subject=${subject}&body=${encodeURIComponent(body)}`;
-    thanksBody.textContent =
-      "A draft should be open in your email. Send it, and the note is ours. The formal invitation still comes later.";
-    window.location.href = href;
-  } else {
-    thanksBody.textContent =
-      "The formal invitation still comes later. Until it does, tell us in person — we like that version too.";
+  const payload = {
+    name: guest,
+    email,
+    coming,
+    invitation: invite,
+    street: mail ? String(data.get("street") || "").trim() : "",
+    city: mail ? String(data.get("city") || "").trim() : "",
+    state: mail ? String(data.get("state") || "").trim() : "",
+    zip: mail ? String(data.get("zip") || "").trim() : "",
+    note,
+  };
+
+  send.disabled = true;
+  send.textContent = "Sending";
+
+  try {
+    if (SHEET_URL) {
+      await fetch(SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      const response = await fetch(`https://formsubmit.co/ajax/${RSVP_TO}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `Wedding reply from ${guest}`,
+          _template: "box",
+          _captcha: "false",
+          _replyto: email,
+          Name: guest,
+          Email: email,
+          Coming: coming,
+          Invitation: invite,
+          Address: mail ? address : "Digital is fine",
+          Note: note,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.success === false || result.success === "false") {
+        throw new Error(result.message || "send failed");
+      }
+    }
+  } catch {
+    error.textContent = "We couldn't send that just now. Please try again in a moment.";
+    error.hidden = false;
+    send.disabled = false;
+    send.textContent = "Send our reply";
+    return;
   }
 
+  thanksBody.textContent = mail
+    ? "We have your note, and the address for a paper invitation. The formal invitation still comes later."
+    : "We have your note. A digital invitation is fine. The formal one still comes later.";
   form.hidden = true;
   thanks.hidden = false;
   thanks.querySelector("h2").focus();
+  send.disabled = false;
+  send.textContent = "Send our reply";
 });
 
 again.addEventListener("click", () => {
   form.reset();
+  syncInvite();
   form.hidden = false;
   thanks.hidden = true;
   form.querySelector("#guest").focus();
