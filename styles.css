@@ -389,11 +389,24 @@ h1 {
 }
 
 .registry-card {
+  position: relative;
   max-width: 40rem;
-  margin: 0 auto;
+  margin: 1.6rem auto 0;
   padding: 0.55rem;
   border: 1px solid var(--line);
   background: rgba(255, 252, 247, 0.35);
+}
+
+.bow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7.4rem;
+  height: auto;
+  transform: translate(-50%, -58%);
+  color: var(--moss);
+  fill: currentColor;
+  pointer-events: none;
 }
 
 .registry-inner {
