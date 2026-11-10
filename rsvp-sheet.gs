@@ -16,6 +16,8 @@ var HEADERS = [
   "State",
   "ZIP",
   "Note",
+  "Adults",
+  "Children",
 ];
 
 function doPost(e) {
@@ -34,10 +36,7 @@ function doPost(e) {
   lock.waitLock(15000);
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(HEADERS);
-      sheet.setFrozenRows(1);
-    }
+    ensureHeaders_(sheet);
 
     var submitted = Utilities.formatDate(new Date(), "America/Chicago", "yyyy-MM-dd HH:mm");
     var row = [
@@ -51,6 +50,8 @@ function doPost(e) {
       data.state || "",
       data.zip || "",
       data.note || "",
+      data.adults || "",
+      data.children || "",
     ];
     sheet.appendRow(row);
     notify_(data, submitted);
@@ -61,6 +62,18 @@ function doPost(e) {
   return json_({ success: true });
 }
 
+function ensureHeaders_(sheet) {
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+    sheet.setFrozenRows(1);
+    return;
+  }
+  var width = Math.max(sheet.getLastColumn(), 1);
+  var header = sheet.getRange(1, 1, 1, width).getValues()[0];
+  if (header.indexOf("Adults") !== -1) return;
+  sheet.getRange(1, width + 1, 1, 2).setValues([["Adults", "Children"]]);
+}
+
 function notify_(data, submitted) {
   var address = [data.street, data.city, data.state, data.zip].filter(Boolean).join(", ");
   var body = [
@@ -68,8 +81,10 @@ function notify_(data, submitted) {
     "",
     "Email: " + (data.email || ""),
     "Coming: " + (data.coming || ""),
+    "Adults: " + (data.adults || "0"),
+    "Children: " + (data.children || "0"),
     "Invitation: " + (data.invitation || ""),
-    "Address: " + (address || "Digital is fine"),
+    address ? "Address: " + address : "",
     data.note ? "Note: " + data.note : "",
   ]
     .filter(function (line) {

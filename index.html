@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <a class="skip" href="#letter">Skip to the letter</a>
+    <a class="skip" href="#day">Skip to the details</a>
 
     <header class="top">
       <a class="mark" href="#top" aria-label="Zach and Brianna, back to top">
@@ -35,9 +35,8 @@
       </a>
       <nav class="nav" aria-label="Page">
         <a href="#day">The day</a>
-        <a href="#letter">A note</a>
         <a href="#registry">Registry</a>
-        <a href="#reply">Reply</a>
+        <a href="#reply">RSVP</a>
       </nav>
     </header>
 
@@ -76,39 +75,38 @@
           <p class="now" id="countdown-now" hidden>It is time.</p>
         </div>
         <p class="sr" id="countdown-live" aria-live="polite"></p>
-        <p class="hero-note">
-          Consider this the first envelope — opened early, on purpose.
-        </p>
-        <a class="down" href="#letter">
-          Read the note
+        <p class="hero-note">We would love to have you there.</p>
+        <a class="down" href="#day">
+          The details
           <span aria-hidden="true">↓</span>
         </a>
       </section>
 
-      <section class="letter" id="letter" aria-labelledby="letter-title">
-        <div class="letter-inner">
-          <p class="eyebrow light">For our people</p>
-          <h2 id="letter-title">We wanted you to hear it from us.</h2>
-          <div class="letter-body">
-            <p>
-              This is the short version. The long version is the people we
-              love most, gathered in one room.
-            </p>
-            <p>
-              Sunday, January 3, 2027, at 11 in the morning. We will say the
-              vows at Martin Memorial SDA Church in Centerville, then
-              celebrate at 762 Dry Prong Road in Williamsport. A proper
-              invitation will follow.
-            </p>
-            <p class="signoff">With love, Zach &amp; Brianna</p>
-          </div>
-        </div>
+      <section class="portraits" aria-label="Photographs of Zach and Brianna">
+        <img
+          src="photos/proposal.jpg"
+          width="682"
+          height="1024"
+          alt="Zach kneeling on the hill while Brianna stands with him under the trees."
+        />
+        <img
+          src="photos/walk.jpg"
+          width="682"
+          height="1024"
+          alt="Zach and Brianna walking hand in hand through a field."
+        />
+        <img
+          src="photos/close.jpg"
+          width="682"
+          height="1024"
+          alt="Zach and Brianna looking at each other and smiling."
+        />
       </section>
 
       <section class="day" id="day" aria-labelledby="day-title">
         <div class="section-head">
           <p class="eyebrow">The day, in brief</p>
-          <h2 id="day-title">What we can tell you now</h2>
+          <h2 id="day-title">The details</h2>
         </div>
         <ol class="facts">
           <li>
@@ -160,6 +158,27 @@
               <p>Festive, and comfortable enough for a long afternoon.</p>
             </div>
           </li>
+          <li class="stream-row">
+            <span class="num">05</span>
+            <div>
+              <h3>From afar</h3>
+              <p>If you cannot be in the room, the ceremony will be live.</p>
+              <a
+                class="stream"
+                href="https://www.youtube.com/live/EhEnmMajngI"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="live.jpg"
+                  width="1024"
+                  height="576"
+                  alt="Zach and Brianna outdoors at sunset. The card reads Our Wedding, live stream, from Martin Memorial Seventh-day Adventist Church, Centerville, Tennessee."
+                />
+                <span>Watch</span>
+              </a>
+            </div>
+          </li>
         </ol>
       </section>
 
@@ -186,11 +205,8 @@
       <section class="reply" id="reply" aria-labelledby="reply-title">
         <div class="reply-copy">
           <p class="eyebrow">A reply</p>
-          <h2 id="reply-title">If you already know you want to be there, tell us.</h2>
-          <p>
-            It helps us plan the room. Nothing is final until the invitation
-            arrives — this is just a hand raised early.
-          </p>
+          <h2 id="reply-title">RSVP</h2>
+          <p>It helps us plan the room.</p>
         </div>
 
         <form class="card" id="rsvp" novalidate>
@@ -219,8 +235,29 @@
               </label>
             </div>
           </fieldset>
+          <fieldset class="field party" id="party">
+            <legend>How many</legend>
+            <div class="party-row">
+              <div class="stepper">
+                <span id="adults-label">Adults</span>
+                <div class="stepper-controls">
+                  <button class="step" type="button" data-step="adults" data-dir="-1" aria-label="Fewer adults">−</button>
+                  <input id="adults" name="adults" type="number" inputmode="numeric" min="1" max="20" value="1" required aria-labelledby="adults-label" />
+                  <button class="step" type="button" data-step="adults" data-dir="1" aria-label="More adults">+</button>
+                </div>
+              </div>
+              <div class="stepper">
+                <span id="children-label">Children</span>
+                <div class="stepper-controls">
+                  <button class="step" type="button" data-step="children" data-dir="-1" aria-label="Fewer children">−</button>
+                  <input id="children" name="children" type="number" inputmode="numeric" min="0" max="20" value="0" required aria-labelledby="children-label" />
+                  <button class="step" type="button" data-step="children" data-dir="1" aria-label="More children">+</button>
+                </div>
+              </div>
+            </div>
+          </fieldset>
           <fieldset class="field">
-            <legend>The invitation</legend>
+            <legend>A paper invitation</legend>
             <div class="switch">
               <label class="switch-opt">
                 <input type="radio" name="invite" value="Digital is fine" checked />
@@ -228,7 +265,7 @@
               </label>
               <label class="switch-opt">
                 <input type="radio" name="invite" value="Please mail an official one" />
-                <span>Mail an official one</span>
+                <span>Mail one to me</span>
               </label>
             </div>
           </fieldset>
@@ -264,7 +301,6 @@
           <button type="submit">Send our reply</button>
           <p class="fine">
             Your reply is added to our list and emailed to zachandbriannajohnson@gmail.com.
-            An early yes, not the formal invitation.
           </p>
         </form>
 

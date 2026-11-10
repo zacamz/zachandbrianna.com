@@ -71,9 +71,17 @@ const send = form.querySelector('button[type="submit"]');
 const addressBlock = document.querySelector("#address");
 const addressInputs = addressBlock.querySelectorAll("input");
 const MAIL_INVITE = "Please mail an official one";
+const DECLINE = "I can't make it";
+const partyBlock = document.querySelector("#party");
+const adultsInput = document.querySelector("#adults");
+const childrenInput = document.querySelector("#children");
 
 function mailChosen() {
   return form.querySelector('input[name="invite"]:checked')?.value === MAIL_INVITE;
+}
+
+function comingValue() {
+  return form.querySelector('input[name="coming"]:checked')?.value || "";
 }
 
 function syncInvite() {
@@ -84,10 +92,45 @@ function syncInvite() {
   });
 }
 
+function syncParty() {
+  const decline = comingValue() === DECLINE;
+  partyBlock.hidden = decline;
+  adultsInput.required = !decline;
+  childrenInput.required = !decline;
+  adultsInput.min = decline ? "0" : "1";
+  if (decline) {
+    adultsInput.value = "0";
+    childrenInput.value = "0";
+  } else if (!adultsInput.value || adultsInput.value === "0") {
+    adultsInput.value = "1";
+  }
+}
+
+function clampCount(input) {
+  const min = Number(input.min);
+  const max = Number(input.max);
+  let value = parseInt(input.value, 10);
+  if (Number.isNaN(value)) value = min;
+  input.value = String(Math.min(max, Math.max(min, value)));
+}
+
 form.querySelectorAll('input[name="invite"]').forEach((input) => {
   input.addEventListener("change", syncInvite);
 });
+form.querySelectorAll('input[name="coming"]').forEach((input) => {
+  input.addEventListener("change", syncParty);
+});
+form.querySelectorAll("button.step").forEach((button) => {
+  button.addEventListener("click", () => {
+    const input = form.querySelector("#" + button.dataset.step);
+    input.value = String((parseInt(input.value, 10) || 0) + Number(button.dataset.dir));
+    clampCount(input);
+  });
+});
+adultsInput.addEventListener("change", () => clampCount(adultsInput));
+childrenInput.addEventListener("change", () => clampCount(childrenInput));
 syncInvite();
+syncParty();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -111,19 +154,18 @@ form.addEventListener("submit", async (event) => {
   const invite = String(data.get("invite"));
   const note = String(data.get("note") || "").trim();
   const mail = mailChosen();
-  const address = [
-    String(data.get("street") || "").trim(),
-    String(data.get("city") || "").trim(),
-    String(data.get("state") || "").trim(),
-    String(data.get("zip") || "").trim(),
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const attending = coming !== DECLINE;
+  clampCount(adultsInput);
+  clampCount(childrenInput);
+  const adults = attending ? adultsInput.value : "0";
+  const children = attending ? childrenInput.value : "0";
 
   const payload = {
     name: guest,
     email,
     coming,
+    adults,
+    children,
     invitation: invite,
     street: mail ? String(data.get("street") || "").trim() : "",
     city: mail ? String(data.get("city") || "").trim() : "",
@@ -158,8 +200,12 @@ form.addEventListener("submit", async (event) => {
           Name: guest,
           Email: email,
           Coming: coming,
+          Adults: adults,
+          Children: children,
           Invitation: invite,
-          Address: mail ? address : "Digital is fine",
+          Address: mail
+            ? [payload.street, payload.city, payload.state, payload.zip].filter(Boolean).join(", ")
+            : "",
           Note: note,
         }),
       });
@@ -177,8 +223,8 @@ form.addEventListener("submit", async (event) => {
   }
 
   thanksBody.textContent = mail
-    ? "We have your note, and the address for a paper invitation. The formal invitation still comes later."
-    : "We have your note. A digital invitation is fine. The formal one still comes later.";
+    ? "We have your reply, and the address for a mailed invitation."
+    : "We have your reply.";
   form.hidden = true;
   thanks.hidden = false;
   thanks.querySelector("h2").focus();
@@ -189,6 +235,7 @@ form.addEventListener("submit", async (event) => {
 again.addEventListener("click", () => {
   form.reset();
   syncInvite();
+  syncParty();
   form.hidden = false;
   thanks.hidden = true;
   form.querySelector("#guest").focus();
